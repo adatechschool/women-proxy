@@ -12,7 +12,6 @@ server.listen(5)
 
 print (f'Listening on {bind_ip}:{bind_port}')
 
-
 def handle_client_connection(client_socket):
     request = client_socket.recv(1024)
     print (f'Received {request}')

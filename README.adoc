@@ -1,3 +1,7 @@
 = Women Proxy
 
 Display feminine tech figure instead of nasty javascript.
+
+== Sources
+
+* https://gist.github.com/Integralist/3f004c3594bbf8431c15ed6db15809ae[Server example python]
