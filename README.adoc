@@ -6,3 +6,4 @@ Display feminine tech figure instead of nasty javascript.
 
 * https://gist.github.com/Integralist/3f004c3594bbf8431c15ed6db15809ae[Server example python]
 * https://stackoverflow.com/questions/4685217/parse-raw-http-headers[Parsing raw http headers]
+* https://realpython.com/python-requests/[About the requests library]
