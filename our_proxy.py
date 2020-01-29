@@ -3,16 +3,11 @@
 import socket
 import threading
 import requests
-import signal
-import sys
 from requests.exceptions import HTTPError
 from http.server import BaseHTTPRequestHandler
 from io import BytesIO
+import handle_signals
 
-def quit_on_ctrl_c(sig, frame):
-    print()
-    sys.exit(0)
-signal.signal(signal.SIGINT, quit_on_ctrl_c)
 
 def handle_client_connection(client_socket):
     raw_request = client_socket.recv(1024)
