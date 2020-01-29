@@ -8,12 +8,13 @@ from handle_requests import *
 
 class proxy(socket):
     def __init__(self, ip, port, backlog = 0): 
+        super().__init__(AF_INET, SOCK_STREAM)
+
         self.bind_ip = ip
         self.bind_port = port
 
-        super().__init__(AF_INET, SOCK_STREAM)
-        super().bind((self.bind_ip, self.bind_port))
-        super().listen(backlog)
+        self.bind((self.bind_ip, self.bind_port))
+        self.listen(backlog)
 
         print(f'Listening on {self.bind_ip}:{self.bind_port}')
 
