@@ -33,6 +33,7 @@ class proxy(socket):
                 print(f'Other error occurred: {err}')
             else:
                 print(response.text)
+                client_socket.send(response.content)
 
         client_socket.close()
 
