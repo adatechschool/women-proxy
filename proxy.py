@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import requests
+import threading
 from socket import *
 from requests.exceptions import HTTPError
 from handle_requests import *
@@ -33,3 +34,12 @@ class proxy(socket):
                 print(response.text)
 
         client_socket.close()
+
+    def wait_and_thread(self):
+        client_sock, address = self.accept()
+        print(f'Accepted connection from {address[0]}:{address[1]}')
+        client_handler = threading.Thread(
+                target=proxy.handle_client_connection,
+                args=(client_sock,)
+                )
+        client_handler.start()
