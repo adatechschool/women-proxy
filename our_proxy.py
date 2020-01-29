@@ -1,23 +1,17 @@
 #!/usr/bin/env python
 
-import socket
 import threading
 
 import handle_basic_signals
-from handle_client import *
+from proxy import *
 
-bind_ip = '0.0.0.0'
-bind_port = 9999
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind((bind_ip, bind_port))
-server.listen(5)
-print (f'Listening on {bind_ip}:{bind_port}')
+server = proxy('0.0.0.0', 9999)
 
 while True:
     client_sock, address = server.accept()
     print (f'Accepted connection from {address[0]}:{address[1]}')
     client_handler = threading.Thread(
-        target=handle_client_connection,
+        target=proxy.handle_client_connection,
         args=(client_sock,)
     )
     client_handler.start()
