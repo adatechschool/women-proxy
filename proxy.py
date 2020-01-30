@@ -21,19 +21,21 @@ class proxy(socket):
     def handle_client_connection(client_socket):
         request = HTTPRequest(client_socket.recv(1024))
         if request.error_code:
-            print(f'Error : {request.error_code} : {request.error_message}')
+            print(f'Parsing error: {request.error_code}: {request.error_message}')
+            return request.error_code
+
+        print(f'Received {request.command} {request.path}')
+        try:
+            response = requests.get(request.path, headers=request.headers)
+            response.raise_for_status()
+        except HTTPError as http_error:
+            print(f'HTTP error: {http_error}')
+        except Exception as error:
+            print(f'Error: {error}')
         else:
-            print(f'Received {request.command} {request.path}')
-            try:
-                response = requests.get(request.path)
-                response.raise_for_status()
-            except HTTPError as http_err:
-                print(f'HTTP error occurred: {http_err}')
-            except Exception as err:
-                print(f'Other error occurred: {err}')
-            else:
-                print(response.text)
-                client_socket.send(response.content)
+            print(response.text)
+            print(response.headers)
+            client_socket.send(response.content)
 
         client_socket.close()
 
