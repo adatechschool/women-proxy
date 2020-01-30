@@ -43,7 +43,7 @@ class Proxy(socket):
         # Retrieve parsed response and convert it as BytesIO.
         # Check size of new parsed and set it in header.
         # Send it back to client.
-        client_socket.send()
+        client_socket.send(response.content)
         client_socket.close()
 
     def wait_and_thread(self):
