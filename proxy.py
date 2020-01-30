@@ -18,13 +18,7 @@ class proxy(socket):
 
         print(f'Listening on {self.bind_ip}:{self.bind_port}')
 
-    def handle_client_connection(client_socket):
-        request = HTTPRequest(client_socket.recv(1024))
-        if request.error_code:
-            print(f'Parsing error: {request.error_code}: {request.error_message}')
-            return request.error_code
-
-        print(f'Received {request.command} {request.path}')
+    def handle_client_method(request):
         try:
             response = requests.get(request.path, headers=request.headers)
             response.raise_for_status()
@@ -33,10 +27,19 @@ class proxy(socket):
         except Exception as error:
             print(f'Error: {error}')
         else:
-            print(response.text)
-            print(response.headers)
-            client_socket.send(response.content)
+            print(f'request headers from server: {response.headers}')
+            return response
 
+    def handle_client_connection(client_socket):
+        request = HTTPRequest(client_socket.recv(1024))
+        if request.error_code:
+            print(f'Parsing error: {request.error_code}: {request.error_message}')
+            return request.error_code
+
+        print(f'Received {request.command} {request.path}')
+        print(f'request headers from client: {request.headers}')
+
+        client_socket.send(proxy.handle_client_method(request).content)
         client_socket.close()
 
     def wait_and_thread(self):
