@@ -6,7 +6,7 @@ from socket import *
 from requests.exceptions import HTTPError
 from handle_requests import *
 
-class proxy(socket):
+class Proxy(socket):
     def __init__(self, ip, port, backlog = 0): 
         super().__init__(AF_INET, SOCK_STREAM)
 
@@ -27,7 +27,7 @@ class proxy(socket):
         except Exception as error:
             print(f'Error: {error}')
         else:
-            print(f'request headers from server: {response.headers}')
+            #print(f'received from server: {response.headers} {response.text}')
             return response
 
     def handle_client_connection(client_socket):
@@ -37,16 +37,19 @@ class proxy(socket):
             return request.error_code
 
         print(f'Received {request.command} {request.path}')
-        print(f'request headers from client: {request.headers}')
-
-        client_socket.send(proxy.handle_client_method(request).content)
+        response = Proxy.handle_client_method(request)
+        # TODO
+        # Send response.text as parameter to an arbitrary function parsing it.
+        # Retrieve parsed response and convert it as BytesIO.
+        # Check size of new parsed and set it in header.
+        # Send it back to client.
+        client_socket.send()
         client_socket.close()
 
     def wait_and_thread(self):
         client_sock, address = self.accept()
         print(f'Accepted connection from {address[0]}:{address[1]}')
         client_handler = threading.Thread(
-                target=proxy.handle_client_connection,
+                target=Proxy.handle_client_connection,
                 args=(client_sock,)
-                )
-        client_handler.start()
+                ).start()
