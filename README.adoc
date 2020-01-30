@@ -8,12 +8,39 @@ Display feminine tech figure instead of nasty javascript.
 * https://stackoverflow.com/questions/4685217/parse-raw-http-headers[Parsing raw http headers]
 * https://realpython.com/python-requests/[About the requests library]
 
-== Bordel
+== Bordel de dépendances
 
-           our_proxy.py
-          /           \
-         /             \
-  proxy.py            handle_signals_basic.py
-        |
-        |
-  handle_request.py
+=== Bordel général
+
+          women_proxy.py
+          /     |     \
+         /      |      \
+  women.py   proxy.py  handle_basic_signals.py
+                |
+                |
+        handle_request.py
+
+=== « proxy.py »
+                
+              +-socket-+
+              |  ...   |
+              +--------+
+                  |
+                  v
+  +-------------proxy--------------+
+  |                                |
+  |        fonction(html)          |
+  |               ^                |
+  |               |                |
+  | handle_client_method(request)  |
+  |               ^                |
+  |               |                |
+  | handle_client_connection(sock) |
+  |               ^                |
+  |               |                |
+  |       wait_and_thread()        | 
+  |                                |
+  |                                |
+  |  set_parsing_handler(fonction) |
+  |                                |
+  +--------------------------------+
